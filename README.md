@@ -46,6 +46,9 @@ Table Of Contents:
 - [hget](#hget)
 - [hset](#hset)
 - [hdel](#hdel)
+- [hincr](#hincr)
+- [hexists](#hexists)
+- [hsize](#hsize)
 
 set
 ---
@@ -437,7 +440,7 @@ Set the string value of a hash field.
 hset key field value
 ```
 
-Return `1` if new hashmap or new field was created, else `0`, both `0` and `1` 
+Return `1` if new hashmap or new field was created, else `0`, both `0` and `1`
 for success set.
 
 ```python
@@ -480,5 +483,57 @@ Return 1 for success, `0` if field or key dosent exist.
 
 ```python
 >>> ssdb.hdel('key', 'field')
+1
+```
+
+hincr
+-----
+
+Increment the integer value of a hash field by the given number.
+
+```
+hincr key field number
+```
+
+Return the value after the increment operation.
+
+- If key dosent exist, set this key a hashmap, and set its field `field` to `0`, then do increment operation.
+- If the field dosnt exist, set it to `0`, then do increment operation.
+- If the value isnt a numberic string, cast it to integer and do increment operation.
+
+```python
+>>> ssdb.hincr('key', 'field', 2)
+3
+```
+
+hexists
+-------
+
+Determine if a hash field exists.
+
+```
+hexists key field
+```
+
+Return `1` if the key and hash field both exist, else `0`.
+
+```
+>>> ssdb.hexists('key', 'field')
+True
+```
+
+hsize
+-----
+
+Get a hashmap's size.
+
+```
+hsize hash
+```
+
+Return the size if hashmap exists, else return `0`.
+
+```python
+>>> ssdb.hsize('key')
 1
 ```
