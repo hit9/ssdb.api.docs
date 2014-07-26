@@ -43,6 +43,9 @@ Table Of Contents:
 - [multi_set](#multi_set)
 - [multi_get](#multi_get)
 - [multi_del](#multi_del)
+- [hget](#hget)
+- [hset](#hset)
+- [hdel](#hdel)
 
 set
 ---
@@ -423,4 +426,59 @@ Return the count of keys deleted.
 ```python
 >>> ssdb.multi_del('x', 'y', 'z')
 3
+```
+
+hset
+----
+
+Set the string value of a hash field.
+
+```
+hset key field value
+```
+
+Return `1` if new hashmap or new field was created, else `0`, both `0` and `1` 
+for success set.
+
+```python
+>>> ssdb.hset('key', 'field', 'val')
+1
+>>> ssdb.hset('key', 'field', 'val2')
+0
+```
+
+hget
+----
+
+Get the string value of a hash field.
+
+```
+hget key field
+```
+
+Return the string value, `null` if field or key dosnt exist.
+
+```python
+>>> ssdb.hget('key', 'field')
+'val2'
+>>> ssdb.hget('key', 'field-not-exist') is None
+True
+>>> ssdb.hget('key-not-exist', 'field') is None
+True
+```
+
+hdel
+----
+
+Delete a hash field.
+
+```
+hdel key field
+```
+
+Return 1 for success, `0` if field or key dosent exist.
+
+```python
+>>> ssdb.hdel('key', 'field')
+1
 ```
