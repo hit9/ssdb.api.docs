@@ -1,18 +1,6 @@
 SSDB API Docs
 =============
 
-Table Of Contents:
-
-1. [Prewords](#prewords)
-2. [set](#set)
-3. [setx](#setx)
-4. [expire](#expire)
-5. [ttl](#ttl)
-6. [setnx](#setnx)
-7. [get](#get)
-
-
-
 Prewords
 --------
 
@@ -30,6 +18,21 @@ status [value]
 ```
 
 Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
+
+Table Of Contents:
+
+- [Prewords](#prewords)
+- [set](#set)
+- [setx](#setx)
+- [expire](#expire)
+- [ttl](#ttl)
+- [setnx](#setnx)
+- [get](#get)
+- [getset](#getset)
+- [del](#del)
+- [incr](#incr)
+- [exists](#exists)
+
 
 set
 ---
@@ -128,4 +131,64 @@ Return the string value of the key, `null` if the key dosent exist.
 'body'
 >>> ssdb.get('key-not-exsit') is None
 True
+```
+
+getset
+------
+
+Set the string value of a key and return its old value.
+
+```
+getset key value
+```
+
+Return the key's old value, `null` if the key dosent exist.
+
+```python
+>>> ssdb.getset('key', 'new-value')
+'old-value'
+>>> ssdb.getset('key-not-exist', 'new-value') is None
+True
+```
+
+del
+---
+
+Delete a key.
+
+```
+del key
+```
+
+Return `1` no matter whether the key exists or not.
+
+```python
+>>> ssdb.delete('key')
+1
+>>> ssdb.delete('key-not-exist')
+1  # you cannt test if a key exists by this value
+```
+
+incr
+----
+
+Increment the integer value of a key by the given number.
+
+```
+incr key number
+```
+
+Return the value after the increment operation.
+
+- If key dosent exist, set this key to `0` and increment it by `number`.
+- If the value isnt a numberic string, cast it to integer and do increment
+operation.
+
+```python
+>>> ssdb.set('key', '1val')
+1
+>>> ssdb.incr('key', 2)
+3
+>>> ssdb.incr('key', 1)
+4
 ```
