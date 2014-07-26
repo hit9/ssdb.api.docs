@@ -32,6 +32,12 @@ Table Of Contents:
 - [del](#del)
 - [incr](#incr)
 - [exists](#exists)
+- [getbit](#getbit)
+- [setbit](#setbit)
+- [countbit](#countbit)
+- [substr](#substr)
+- [strlen](#strlen)
+- [keys](#keys)
 
 
 set
@@ -191,4 +197,138 @@ operation.
 3
 >>> ssdb.incr('key', 1)
 4
+```
+
+exists
+------
+
+Determine if a key exists.
+
+```
+exists key
+```
+
+Return `1` if key exists, else `0`.
+
+```python
+>>> ssdb.exists('key')
+True
+```
+
+getbit
+------
+
+Returns the bit value at offset in the string value stored at key.
+
+```
+getbit key offset
+```
+
+Return the bit value(`1` or `0`).
+
+- If key dosent exist, return `0`
+- If `offset` exceeds the length of the value, return `0`
+
+```python
+>>> ssdb.set('key', 'val')
+1
+>>> ssdb.getbit('key', 2)
+1
+```
+
+setbit
+------
+
+Sets the bit at offset in the string value
+
+```
+setbit key offset bit
+```
+
+Return the old bit value.
+
+
+```
+>>> ssdb.set('key', 'val')
+1
+>>> ssdb.setbit('key', 2, 0)
+1
+>>> ssdb.get('key')
+'ral'
+```
+
+countbit
+--------
+
+Count `1` in the string value of a key.
+
+```
+countbit key [offset] [size]
+```
+
+- **offset** -  optional, the offset position
+- **size** - optional, the size limit to count in.
+
+Return the count result.
+
+```python
+>>> ssdb.countbit('key')
+8
+```
+
+substr
+------
+
+Get substring of the string value of a key.
+
+```
+substr key [offset] [size]
+```
+
+- **offset** -  optional, the offset position
+- **size** - optional, the size limit to slice.
+
+Return the substring.
+
+```python
+>>> ssdb.set('key', 'hello world')
+1
+>>> ssdb.substr('key', 6, 10)
+'world'
+```
+
+strlen
+-------
+
+Get a key's string value's length.
+
+```
+strlen key
+```
+
+Return the length, `0` if key dosent exist.
+
+```python
+>>> ssdb.strlen('key')
+11
+```
+
+keys
+-----
+
+List keys within a range.
+
+```
+keys start end limit
+```
+
+- **star**: keys range start, empty string `''` for `-inf`
+- **end**: keys range end, empty string `''` for `+inf`
+- **limit**: keys count limit
+
+Return the list of keys.
+
+```python
+>>> ssdb.keys('k', 'key', 5)
+['k1', 'k2', 'key']
 ```
