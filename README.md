@@ -38,7 +38,11 @@ Table Of Contents:
 - [substr](#substr)
 - [strlen](#strlen)
 - [keys](#keys)
-
+- [scan](#scan)
+- [rscan](#rscan)
+- [multi_set](#multi_set)
+- [multi_get](#multi_get)
+- [multi_del](#multi_del)
 
 set
 ---
@@ -316,7 +320,7 @@ Return the length, `0` if key dosent exist.
 keys
 -----
 
-List keys within a range.
+List keys within a key's range.
 
 ```
 keys start end limit
@@ -331,4 +335,92 @@ Return the list of keys.
 ```python
 >>> ssdb.keys('k', 'key', 5)
 ['k1', 'k2', 'key']
+```
+
+scan
+----
+
+List key-value pairs within a key's range.
+
+```
+scan start end limit
+```
+
+- **star**: keys range start, empty string `''` for `-inf`
+- **end**: keys range end, empty string `''` for `+inf`
+- **limit**: keys count limit
+
+Return the list of key, value.
+
+```python
+>>> ssdb.scan('k', 'key', 5)
+['k1', 'v1', 'k2', 'v2', 'key', 'hello world']
+```
+
+rscan
+-----
+
+Reverse list key-value pairs within a key's range.
+
+```
+rscan start end limit
+```
+
+- **star**: keys range start, empty string `''` for `-inf`
+- **end**: keys range end, empty string `''` for `+inf`
+- **limit**: keys count limit
+
+Return the list of key, value.
+
+```python
+>>> ssdb.rscan('z', 'y', 5)
+['y', '12']
+```
+
+multi_set
+---------
+
+Batch set the string values of multiple keys.
+
+```
+multi_set key1 value1 key2 value2 ..
+```
+
+Return the count of keys set.
+
+```python
+>>> ssdb.multi_set('x', 1, 'y', 2, 'z', 3)
+3
+```
+
+multi_get
+---------
+
+Batch get the string values of multiple keys.
+
+```
+multi_get key1 key2 ..
+```
+
+Return the key-value list.
+
+```python
+>>> ssdb.multi_get('x', 'y', 'z')
+['x', '1', 'y', '2', 'z', '3']
+```
+
+multi_del
+---------
+
+Batch delete multiple keys.
+
+```
+multi_del key1 key2 ..
+```
+
+Return the count of keys deleted.
+
+```python
+>>> ssdb.multi_del('x', 'y', 'z')
+3
 ```
