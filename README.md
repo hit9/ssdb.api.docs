@@ -92,6 +92,8 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [multi_zset](#multi_zset)
 - [multi_zget](#multi_zget)
 - [multi_zdel](#multi_zdel)
+- [qsize](#qsize)
+- [qclear](#qclear)
 
 set
 ---
@@ -1129,3 +1131,37 @@ Return the count of members removed.
 >>> ssdb.multi_zdel('zset', 'k1', 'k2')
 2
 ```
+
+qsize
+-----
+
+Get the size of a queue.
+
+```
+qsize queue
+```
+
+Return queue's size.
+
+```python
+>>> ssdb.qsize('q')
+100
+```
+
+qclear
+------
+
+Clear a queue.
+
+```
+qclear queue
+```
+
+Return the count of members removed.
+
+```python
+>>> ssdb.qclear('q')
+100
+```
+
+
