@@ -8,8 +8,18 @@ This is an unofficial documentation for [ssdb](https://github.com/ideawu/ssdb),
 which is a fast nosql database with a variety of data structures,
 welcome to fork and send me pull requests.
 
+#### examples
+
 All examples are in Python, via
 [ssdb.py](https://github.com/hit9/ssdb.py).
+
+#### parameters
+
+- parameters like `limit`, `-1` for all.
+- parameters like `start`, `''` for `-inf`.
+- parameters like `end`, `''` for `+inf`.
+
+#### responses
 
 Ssdb responses follows this pattern:
 
@@ -66,6 +76,15 @@ Table Of Contents:
 - [zexists](#zexists)
 - [zlist](#zlist)
 - [zkeys](#zkeys)
+- [zscan](#zscan)
+- [zrscan](#zrscan)
+- [zrank](#zrank)
+- [zrrank](#zrrank)
+- [zrange](#zrange)
+- [zrrange](#zrrange)
+- [zclear](#zclear)
+- [zcount](#zcount)
+- [zsum](#zsum)
 
 set
 ---
@@ -844,4 +863,167 @@ Return the list of zsets.
 zkeys
 -----
 
+List keys within some range in a zset.
 
+```
+zkeys zset key_start score_start score_end limit
+```
+
+The range is defined like:
+
+```
+(key.score == score_start && key > key_start) || (key.score > score_start)
+```
+
+- **key_start**: zset key range start, empty string `""` for `-inf`
+- **score_start**: zset score range start, empty string `""` for `-inf`
+- **score_end**: zset score end, empty string `"" for `+inf
+- **limit**: zset keys count limit
+
+Return the list of keys.
+
+```python
+>>> ssdb.zkeys('zset', '', '', '', -1)  # list all keys
+['keyf', 'key', 'key1', 'key2']
+>>> ssdb.zkeys('zset', '', 10, '', -1)  # list all keys with score not letter than 10
+['key1', 'key2']
+```
+
+zscan
+-----
+
+List key-score pairs within some range in a zset.
+
+For the range and parameters, see [zkeys](#zscan)
+
+```python
+>>> ssdb.zscan('zset', '', '', '', -1)  # list all key-score pairs
+['keyf', '3', 'key', '6', 'key1', '10', 'key2', '30']
+>>> ssdb.zscan('zset', '', 10, '', -1)  # list all key-score pairs with score not letter than 10
+['key1', '10', 'key2', '30']
+```
+
+zrscan
+-------
+
+Reverse list key-score pairs within some range in a zset, see also
+[zscan](#zscan).
+
+```python
+>>> ssdb.zrscan('zset', '', '', '', -1)  # reverse list all key-score pairs
+['key2', '30', 'key1', '10', 'key', '6', 'keyf', '3']
+```
+
+zrank
+-----
+
+Get the rank of a key sorted by scores in a zset.
+
+*Note: this method is very slow, try to not use it in production*.
+
+```
+zrank zset key
+```
+
+Return the rank, `-1` if key wasnt found in the zset.
+
+```
+>>> ssdb.zrank('zset', 'key')
+1
+>>> ssdb.zrank('zset', 'key-not-exist')
+-1
+```
+
+zrrank
+------
+
+Get the rank of a key reverse sorted by scores in a zset, see also
+[zrank](#zrank)
+
+```python
+>>> ssdb.zrrank('zset', 'key')
+2
+>>> ssdb.zrrank('zset', 'key-not-exist')
+-1
+```
+
+zrange
+------
+
+Get key-score pairs sorted by scores in a zset.
+
+```
+zrange zset offset limit
+```
+
+- **offset**: the poisition to start. *offset bigger, zrange slower*
+- **limit**: keys returned count limit, `-1` for all.
+
+```python
+>>> ssdb.zrange('zset', 0, -1)  # Get all key-score pairs in order, sorted by scores
+['keyf', '3', 'key', '6', 'key1', '10', 'key2', '30']
+```
+
+
+zrrange
+-------
+
+Get key-score pairs reverse sorted by scores in a zsetm, see also
+[zrange](#zrange).
+
+```
+zrrange zset offset limit
+```
+
+```python
+>>> ssdb.zrrange('zset', 0, -1)  # Get all key-score pairs in order, reverse sorted by scores
+['key2', '30', 'key1', '10', 'key', '6', 'keyf', '3']
+```
+
+zclear
+------
+
+Clear a zset.
+
+```
+zclear zset
+```
+
+Return the count of keys deleted
+
+```python
+>>> ssdb.zclear('zset')
+4
+```
+
+zcount
+------
+
+Count keys with score in a range.
+
+```
+zcount zset score_start score_end
+```
+
+Return the count.
+
+```python
+>>> ssdb.zcount('zset', 0, 50)
+2
+```
+
+zsum
+----
+
+Sum the scores with score in a range.
+
+```
+zsum zset score_start zscore_end
+```
+
+Return the sumed value.
+
+```python
+>>> ssdb.zsum('zset', '', '')  # sum all scores
+130
+```
