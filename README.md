@@ -94,6 +94,10 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [multi_zdel](#multi_zdel)
 - [qsize](#qsize)
 - [qclear](#qclear)
+- [qfront](#qfront)
+- [qback](#qback)
+- [qget](#qget)
+- [qslice](#qslice)
 
 set
 ---
@@ -1164,4 +1168,66 @@ Return the count of members removed.
 100
 ```
 
+qfront
+------
 
+Get the first member of a queue.
+
+```
+qfront queue
+```
+
+Return the first member, `null` on an empty queue.
+
+```python
+>>> ssdb.qfront('q')
+'0'
+```
+
+qback
+-----
+
+Get the last memver of a queue.
+
+```
+qback queue
+```
+
+Return the last member, `null` on an empty queue.
+
+```python
+>>> ssdb.qback('q')
+'99'
+```
+
+qget
+----
+
+Get member in a queue by given index.
+
+```
+qget queue index
+```
+
+Return the member, `null` if the member was not found.
+
+```python
+>>> ssdb.qget('q', 10)
+'10'
+```
+
+qslice
+------
+
+Get a range of members from a queue.
+
+```
+qslice queue start end
+```
+
+Return the list of members.
+
+```python
+>>> ssdb.qslice('q', 10, 15)
+['10', '11', '12', '13', '14', '15']
+```
