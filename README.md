@@ -468,14 +468,14 @@ Get the string value of a hash field.
 hget hash field
 ```
 
-Return the string value, `null` if `field` or `key` dosnt exist.
+Return the string value, `null` if `field` or `hash` dosnt exist.
 
 ```python
->>> ssdb.hget('key', 'field')
+>>> ssdb.hget('hash', 'field')
 'val2'
->>> ssdb.hget('key', 'field-not-exist') is None
+>>> ssdb.hget('hash', 'field-not-exist') is None
 True
->>> ssdb.hget('key-not-exist', 'field') is None
+>>> ssdb.hget('hash-not-exist', 'field') is None
 True
 ```
 
@@ -491,7 +491,7 @@ hdel hash field
 Return 1 for success, `0` if `field` or `hash` dosent exist.
 
 ```python
->>> ssdb.hdel('key', 'field')
+>>> ssdb.hdel('hash', 'field')
 1
 ```
 
@@ -511,7 +511,7 @@ Return the value after the increment operation.
 - If the value isnt a numberic string, cast it to integer and do increment operation.
 
 ```python
->>> ssdb.hincr('key', 'field', 2)
+>>> ssdb.hincr('hash', 'field', 2)
 3
 ```
 
@@ -527,7 +527,7 @@ hexists hash field
 Return `1` if the `hash` and `field` both exist, else `0`.
 
 ```
->>> ssdb.hexists('key', 'field')
+>>> ssdb.hexists('hash', 'field')
 True
 ```
 
@@ -543,7 +543,7 @@ hsize hash
 Return the size if `hash` exists, else return `0`.
 
 ```python
->>> ssdb.hsize('key')
+>>> ssdb.hsize('hash')
 1
 ```
 
@@ -657,3 +657,5 @@ Return the count of fields deleted.
 >>> ssdb.hclear('hash')
 2
 ```
+
+
