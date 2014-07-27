@@ -98,6 +98,12 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [qback](#qback)
 - [qget](#qget)
 - [qslice](#qslice)
+- [qpush](#qpush)
+- [qpush_front](#qpush_front)
+- [qpush_back](#qpush_back)
+- [qpop](#qpop)
+- [qpop_front](#qpop_front)
+- [qpop_back](#qpop_back)
 
 set
 ---
@@ -1230,4 +1236,78 @@ Return the list of members.
 ```python
 >>> ssdb.qslice('q', 10, 15)
 ['10', '11', '12', '13', '14', '15']
+```
+
+qpush
+------
+
+Alias for [qpush_back](#qpush_back).
+
+qpush_front
+-----------
+
+Insert a member to the head of a queue.
+
+```
+qpush_front queue member
+```
+
+Return the queue's size after push operation.
+
+```python
+>>> ssdb.qpush_front('q', 34)
+101
+```
+
+qpush_back
+----------
+
+Append a member to the end of a queue.
+
+```
+qpush_back queue member
+```
+
+Return the queue's size after push operation
+
+```python
+>>> ssdb.qpush_back('q', 34)
+102
+```
+
+qpop
+----
+
+Alias for [qpop_front](#qpop_front).
+
+qpop_front
+----------
+
+Pop a member from the head of a queue.
+
+```
+qpop_front queue
+```
+
+Return the poped member, `null` if the queue dosent exist or is empty.
+
+```python
+>>> ssdb.qpop_front('q')
+'34'
+```
+
+qpop_back
+---------
+
+Pop a member from the end of a queue.
+
+```
+qpop_back queue
+```
+
+Return the poped member, `null` if the queue desent exist or is empty.
+
+```python
+>>> ssdb.qpop_back('q')
+'99'
 ```
