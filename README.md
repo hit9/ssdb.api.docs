@@ -61,6 +61,7 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [hexists](#hexists)
 - [hsize](#hsize)
 - [hlist](#hlist)
+- [hrlist](#hrlist)
 - [hkeys](#hkeys)
 - [hgetall](#hgetall)
 - [hscan](#hscan)
@@ -76,6 +77,7 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [zsize](#zsize)
 - [zexists](#zexists)
 - [zlist](#zlist)
+- [zrlist](#zrlist)
 - [zkeys](#zkeys)
 - [zscan](#zscan)
 - [zrscan](#zrscan)
@@ -104,6 +106,8 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [qpop](#qpop)
 - [qpop_front](#qpop_front)
 - [qpop_back](#qpop_back)
+- [qlist](#qlist)
+- [qrlist](#qrlist)
 
 set
 ---
@@ -613,6 +617,17 @@ Return the hashmap list.
 ['hash']
 ```
 
+hrlist
+------
+
+Reverse list hashmaps within a key range.
+
+```
+hrlist start end limit
+```
+
+see also [hlist](#hlist).
+
 hkeys
 -----
 
@@ -865,7 +880,7 @@ zlist
 List zsets within a name range.
 
 ```
-zlist start end
+zlist start end limit
 ```
 
 - **star**: zset name range start, empty string `''` for `-inf`
@@ -878,6 +893,17 @@ Return the list of zsets.
 >>> ssdb.zlist('', '', 100)
 ['z', 'zset']
 ```
+
+zrlist
+------
+
+Reverse list zsets within a name range.
+
+```
+zrlist start end
+```
+
+see also [zrlist](#zrlist).
 
 zkeys
 -----
@@ -1311,3 +1337,30 @@ Return the poped member, `null` if the queue desent exist or is empty.
 >>> ssdb.qpop_back('q')
 '99'
 ```
+
+qlist
+-----
+
+List all queues within a name range.
+
+```
+qlist start end
+```
+-
+- **star**: queue name range start, empty string `''` for `-inf`
+- **end**: queue name range end, empty string `''` for `+inf`
+- **limit**: queues count limit
+
+Return the list of queues names.
+
+```python
+>>> c.qlist('', '', 1)
+['q']
+```
+
+qrlist
+------
+
+Reverse list all queues within a name range.
+
+see also [qlist](#qlist).
