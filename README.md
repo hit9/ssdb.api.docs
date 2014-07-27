@@ -58,6 +58,14 @@ Table Of Contents:
 - [multi_hset](#multi_hset)
 - [multi_hget](#multi_hget)
 - [multi_hdel](#multi_hdel)
+- [zset](#zset)
+- [zget](#zget)
+- [zdel](#zdel)
+- [zincr](#zincr)
+- [zsize](#zsize)
+- [zexists](#zexists)
+- [zlist](#zlist)
+- [zkeys](#zkeys)
 
 set
 ---
@@ -205,7 +213,7 @@ incr key number
 
 Return the value after the increment operation.
 
-- If key dosent exist, set this key to `0` and increment it by `number`.
+- If key dosent exist, set this key to `0` and increment its value by `number`.
 - If the value isnt a numberic string, cast it to integer and do increment
 operation.
 
@@ -468,7 +476,7 @@ Get the string value of a hash field.
 hget hash field
 ```
 
-Return the string value, `null` if `field` or `hash` dosnt exist.
+Return the string value, `null` if `field` or `hash` dosent exist.
 
 ```python
 >>> ssdb.hget('hash', 'field')
@@ -657,5 +665,183 @@ Return the count of fields deleted.
 >>> ssdb.hclear('hash')
 2
 ```
+
+multi_hset
+----------
+
+Batch set multiple fields in a hashmap.
+
+```
+multi_hset hash field value ..
+```
+
+Return the count of fields created, but non-negative integer for success.
+
+```python
+>>> ssdb.multi_hset('hash', 'k1', 'v1', 'k2', 'v2')
+2
+```
+
+multi_hget
+----------
+
+Batch get the string values of multiple fields in a hashmap.
+
+
+```
+multi_hget hash field ..
+```
+
+Return the values list.
+
+```python
+>>> ssdb.multi_hget('hash', 'k1', 'k2')
+['k1', 'v1', 'k2', 'v2']
+```
+
+multi_hdel
+----------
+
+Batch delete multiple fields in a hashmap.
+
+
+```
+multi_hdel hash field ..
+```
+
+```python
+>>> ssdb.multi_hdel('hash', 'k1', 'k2')
+2
+```
+
+zset
+----
+
+Set the score value of a key in a zset.
+
+```
+zset zset key score
+```
+
+Return 1 if a new key was created, else 0.
+
+```python
+>>> ssdb.zset('zset', 'key', 4)
+1
+```
+
+zget
+----
+
+Get the score value of a key in a zset.
+
+```
+zget zset key
+```
+
+Return the key's score value.
+
+```python
+>>> ssdb.zget('zset', 'key')
+4
+```
+
+zdel
+----
+
+Delete a key in a zset.
+
+```
+zdel zset key
+```
+
+Return `1` on success, `0` if `key` was not found.
+
+```python
+>>> ssdb.zdel('zset', 'key')
+1
+```
+
+zincr
+-----
+
+Increment the score value of a key by the given number in a zset.
+
+```
+zincr zset key number
+```
+
+```python
+>>> ssdb.zincr('zset', 'key', 2)
+6
+```
+
+Return the value after the increment operation.
+
+- If zset dosent exist, create this zset , set the key with socre `0`, then do increment operation.
+- If key dosent exist, set the key with score `0` and then do increment operation.
+- If the value isnt a numberic string, cast it to integer and do increment operation.
+
+```python
+>>> ssdb.zincr('zset', 'key', 2)
+6
+```
+
+zexists
+-------
+
+Determine whether a key exists in a zset.
+
+```
+zexists zset key
+```
+
+Return 1 if the key exists, else `0`.
+
+```python
+>>> ssdb.zexists('zset', 'key')
+True
+```
+
+
+zsize
+-----
+
+Get a zset's size.
+
+
+```
+zsize zset
+```
+
+Return the count, if `zset` dosent exist, return `0`.
+
+```python
+>>> ssdb.zsize('zset')
+2
+```
+
+zlist
+------
+
+List zsets within a name range.
+
+```
+zlist start end
+```
+
+- **star**: zset name range start, empty string `''` for `-inf`
+- **end**: zset name range end, empty string `''` for `+inf`
+- **limit**: zset count limit
+
+Return the list of zsets.
+
+```python
+>>> ssdb.zlist('', '', 100)
+['z', 'zset']
+```
+
+zkeys
+-----
 
 
