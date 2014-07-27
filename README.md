@@ -49,6 +49,15 @@ Table Of Contents:
 - [hincr](#hincr)
 - [hexists](#hexists)
 - [hsize](#hsize)
+- [hlist](#hlist)
+- [hkeys](#hkeys)
+- [hgetall](#hgetall)
+- [hscan](#hscan)
+- [hrscan](#hrscan)
+- [hclear](#hclear)
+- [multi_hset](#multi_hset)
+- [multi_hget](#multi_hget)
+- [multi_hdel](#multi_hdel)
 
 set
 ---
@@ -437,7 +446,7 @@ hset
 Set the string value of a hash field.
 
 ```
-hset key field value
+hset hash field value
 ```
 
 Return `1` if new hashmap or new field was created, else `0`, both `0` and `1`
@@ -456,10 +465,10 @@ hget
 Get the string value of a hash field.
 
 ```
-hget key field
+hget hash field
 ```
 
-Return the string value, `null` if field or key dosnt exist.
+Return the string value, `null` if `field` or `key` dosnt exist.
 
 ```python
 >>> ssdb.hget('key', 'field')
@@ -476,10 +485,10 @@ hdel
 Delete a hash field.
 
 ```
-hdel key field
+hdel hash field
 ```
 
-Return 1 for success, `0` if field or key dosent exist.
+Return 1 for success, `0` if `field` or `hash` dosent exist.
 
 ```python
 >>> ssdb.hdel('key', 'field')
@@ -492,13 +501,13 @@ hincr
 Increment the integer value of a hash field by the given number.
 
 ```
-hincr key field number
+hincr hash field number
 ```
 
 Return the value after the increment operation.
 
-- If key dosent exist, set this key a hashmap, and set its field `field` to `0`, then do increment operation.
-- If the field dosnt exist, set it to `0`, then do increment operation.
+- If `hash` dosent exist, set this `hash` a hashmap, and set its field `field` to `0`, then do increment operation.
+- If the `field` dosnt exist, set it to `0`, then do increment operation.
 - If the value isnt a numberic string, cast it to integer and do increment operation.
 
 ```python
@@ -512,10 +521,10 @@ hexists
 Determine if a hash field exists.
 
 ```
-hexists key field
+hexists hash field
 ```
 
-Return `1` if the key and hash field both exist, else `0`.
+Return `1` if the `hash` and `field` both exist, else `0`.
 
 ```
 >>> ssdb.hexists('key', 'field')
@@ -531,9 +540,120 @@ Get a hashmap's size.
 hsize hash
 ```
 
-Return the size if hashmap exists, else return `0`.
+Return the size if `hash` exists, else return `0`.
 
 ```python
 >>> ssdb.hsize('key')
 1
+```
+
+hlist
+-----
+
+List hashmaps within a key range.
+
+```
+hlist start end limit
+```
+
+- **star**: hashmap range start, empty string `''` for `-inf`
+- **end**: hashmap range end, empty string `''` for `+inf`
+- **limit**: hashmap count limit
+
+Return the hashmap list.
+
+```python
+>>> ssdb.hlist('', '', 1)
+['hash']
+```
+
+hkeys
+-----
+
+List fields in a hashmap within a field range.
+
+```
+hkeys start end limit
+```
+- **star**: fields range start, empty string `''` for `-inf`
+- **end**: fields range end, empty string `''` for `+inf`
+- **limit**: fields count limit
+
+Return the fields list.
+
+```python
+>>> ssdb.hkeys('hashmap', '', '', 1)
+['field']
+```
+
+hgetall
+-------
+
+List all field-value pairs in a hashmap.
+
+```
+hgetall hash
+```
+
+Return field and value list
+
+```python
+>>> ssdb.hgetall('hash')
+['k', 'v', 'key', 'val']
+```
+
+hscan
+-----
+
+List field-value pairs within a field range.
+
+```
+hscan hash start end limit
+```
+
+- **star**: fields range start, empty string `''` for `-inf`
+- **end**: fields range end, empty string `''` for `+inf`
+- **limit**: fields count limit
+
+Return field and value list.
+
+```python
+>>> ssdb.hscan('hash', '', '', 2)
+['k', 'v', 'key', 'val']
+```
+
+hrscan
+------
+
+Reverse list field-value pairs within a field range.
+
+```
+hrscan hash start end limit
+```
+
+- **star**: fields range start, empty string `''` for `-inf`
+- **end**: fields range end, empty string `''` for `+inf`
+- **limit**: fields count limit
+
+Return field and value list.
+
+```python
+>>> ssdb.hrscan('hash', '', '', 2)
+['key', 'val', 'k', 'v']
+```
+
+hclear
+------
+
+Clear a hashmap.
+
+```
+hclear hash
+```
+
+Return the count of fields deleted.
+
+```python
+>>> ssdb.hclear('hash')
+2
 ```
