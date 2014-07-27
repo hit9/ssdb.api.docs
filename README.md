@@ -18,6 +18,7 @@ All examples are in Python, via
 - parameters like `limit`, `-1` for all.
 - parameters like `start`, `''` for `-inf`.
 - parameters like `end`, `''` for `+inf`.
+- all range sections are closed.
 
 #### responses
 
@@ -85,6 +86,12 @@ Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 - [zclear](#zclear)
 - [zcount](#zcount)
 - [zsum](#zsum)
+- [zavg](#zavg)
+- [zremrangebyrank](#zremrangebyrank)
+- [zremrangebyscore](#zremrangebyscore)
+- [multi_zset](#multi_zset)
+- [multi_zget](#multi_zget)
+- [multi_zdel](#multi_zdel)
 
 set
 ---
@@ -1026,4 +1033,99 @@ Return the sumed value.
 ```python
 >>> ssdb.zsum('zset', '', '')  # sum all scores
 130
+```
+
+zavg
+----
+
+Caculate the average value of scores with score in a range.
+
+
+```
+zavg zset score_start zscore_end
+```
+
+```python
+>>> ssdb.zavg('zset', '', '')
+43.333333
+```
+
+zremrangebyrank
+---------------
+
+Remove all members in a sorted set within the given indexes.
+
+```
+zremrangebyrank zset score_start zscore_end
+```
+
+Return the count of members removed.
+
+```python
+>>> ssdb.zremrangebyrank('zset', 0, 1)
+2
+```
+
+zremrangebyscore
+----------------
+
+Remove all members in a sorted set within the given score range.
+
+```
+zremrangebyscore score_start score_end
+```
+
+Return the count of members removed.
+
+```python
+>>> ssdb.zremrangebyscore('zset', 10, 20)
+1
+```
+
+multi_zset
+----------
+
+Batch set the score value of multiple keys in a sorted set.
+
+```
+multi_zset zset key1 score1 ..
+```
+
+Return the count of keys created.
+
+```python
+>>> ssdb.multi_zset('zset', 'k1', 10, 'k2', 100)
+2
+```
+
+multi_zget
+----------
+
+Batch get the score value of multiple keys in a sorted set.
+
+```
+multi_zget zset key1 key2 ..
+```
+
+Return the list of scores.
+
+```python
+>>> ssdb.multi_zget('zset', 'k1', 'k2')
+['k1', '10', 'k2', '100']
+```
+
+multi_zdel
+----------
+
+Batch remove members by multiple keys.
+
+```
+multi_del zset key1 key2 ..
+```
+
+Return the count of members removed.
+
+```python
+>>> ssdb.multi_zdel('zset', 'k1', 'k2')
+2
 ```
