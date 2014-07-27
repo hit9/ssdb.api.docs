@@ -29,9 +29,9 @@ status [value]
 
 Status maybe `"ok"`, `"not_found"` or `"client_error"` etc.
 
-Table Of Contents:
 
-- [Prewords](#prewords)
+#### commands
+
 - [set](#set)
 - [setx](#setx)
 - [expire](#expire)
