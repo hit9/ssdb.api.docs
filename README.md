@@ -18,7 +18,9 @@ All examples are in Python, via
 - parameters like `limit`, `-1` for all.
 - parameters like `start`, `''` for `-inf`.
 - parameters like `end`, `''` for `+inf`.
-- all range sections are closed.
+
+
+- for interfaces like `*keys`, `*scan` and `*list`, the range section is left open and right closed.
 
 #### responses
 
@@ -394,6 +396,7 @@ keys start end limit
 - **star**: keys range start, empty string `''` for `-inf`
 - **end**: keys range end, empty string `''` for `+inf`
 - **limit**: keys count limit
+- **section**: `(start, end]`
 
 Return the list of keys.
 
@@ -414,6 +417,7 @@ scan start end limit
 - **star**: keys range start, empty string `''` for `-inf`
 - **end**: keys range end, empty string `''` for `+inf`
 - **limit**: keys count limit
+- **section**: `(start, end]`
 
 Return the list of key, value.
 
@@ -434,6 +438,7 @@ rscan start end limit
 - **star**: keys range start, empty string `''` for `-inf`
 - **end**: keys range end, empty string `''` for `+inf`
 - **limit**: keys count limit
+- **section**: `(start, end]`
 
 Return the list of key, value.
 
@@ -609,6 +614,7 @@ hlist start end limit
 - **star**: hashmap range start, empty string `''` for `-inf`
 - **end**: hashmap range end, empty string `''` for `+inf`
 - **limit**: hashmap count limit
+- **section**: `(start, end]`
 
 Return the hashmap list.
 
@@ -639,6 +645,7 @@ hkeys start end limit
 - **star**: fields range start, empty string `''` for `-inf`
 - **end**: fields range end, empty string `''` for `+inf`
 - **limit**: fields count limit
+- **section**: `(start, end]`
 
 Return the fields list.
 
@@ -675,6 +682,7 @@ hscan hash start end limit
 - **star**: fields range start, empty string `''` for `-inf`
 - **end**: fields range end, empty string `''` for `+inf`
 - **limit**: fields count limit
+- **section**: `(start, end]`.
 
 Return field and value list.
 
@@ -695,6 +703,7 @@ hrscan hash start end limit
 - **star**: fields range start, empty string `''` for `-inf`
 - **end**: fields range end, empty string `''` for `+inf`
 - **limit**: fields count limit
+- **section**: `(start, end]`.
 
 Return field and value list.
 
@@ -886,6 +895,7 @@ zlist start end limit
 - **star**: zset name range start, empty string `''` for `-inf`
 - **end**: zset name range end, empty string `''` for `+inf`
 - **limit**: zset count limit
+- **section**: `(start, end]`.
 
 Return the list of zsets.
 
@@ -924,6 +934,7 @@ The range is defined like:
 - **score_start**: zset score range start, empty string `""` for `-inf`
 - **score_end**: zset score end, empty string `"" for `+inf
 - **limit**: zset keys count limit
+- **section**: left open and right closed.
 
 Return the list of keys.
 
@@ -1003,6 +1014,7 @@ zrange zset offset limit
 
 - **offset**: the poisition to start. *offset bigger, zrange slower*
 - **limit**: keys returned count limit, `-1` for all.
+- **section**: `[offset, offse + limit)`.
 
 ```python
 >>> ssdb.zrange('zset', 0, -1)  # Get all key-score pairs in order, sorted by scores
@@ -1050,6 +1062,8 @@ Count keys with score in a range.
 zcount zset score_start score_end
 ```
 
+- **section**: `[score_start, score_end]`.
+
 Return the count.
 
 ```python
@@ -1065,6 +1079,8 @@ Sum the scores with score in a range.
 ```
 zsum zset score_start zscore_end
 ```
+
+- **section**: `[score_start, score_end]`.
 
 Return the sumed value.
 
@@ -1083,6 +1099,8 @@ Caculate the average value of scores with score in a range.
 zavg zset score_start zscore_end
 ```
 
+- **section**: `[score_start, score_end]`.
+
 ```python
 >>> ssdb.zavg('zset', '', '')
 43.333333
@@ -1096,6 +1114,8 @@ Remove all members in a sorted set within the given indexes.
 ```
 zremrangebyrank zset score_start zscore_end
 ```
+
+- **section**: `[score_start, score_end]`.
 
 Return the count of members removed.
 
@@ -1112,6 +1132,8 @@ Remove all members in a sorted set within the given score range.
 ```
 zremrangebyscore score_start score_end
 ```
+
+- **section**: `[score_start, score_end]`.
 
 Return the count of members removed.
 
@@ -1256,6 +1278,8 @@ Get a range of members from a queue.
 ```
 qslice queue start end
 ```
+
+- **section**: `[start, end]`.
 
 Return the list of members.
 
