@@ -1112,10 +1112,10 @@ zremrangebyrank
 Remove all members in a sorted set within the given indexes.
 
 ```
-zremrangebyrank zset score_start zscore_end
+zremrangebyrank zset rank_start rank_end
 ```
 
-- **section**: `[score_start, score_end]`.
+- **section**: `[rank_start, rank_end]`.
 
 Return the count of members removed.
 
