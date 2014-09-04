@@ -1296,10 +1296,10 @@ Alias for [qpush_back](#qpush_back).
 qpush_front
 -----------
 
-Insert a member to the head of a queue.
+Insert one or multiple members to the head of a queue.
 
 ```
-qpush_front queue member
+qpush_front queue members..
 ```
 
 Return the queue's size after push operation.
@@ -1312,10 +1312,10 @@ Return the queue's size after push operation.
 qpush_back
 ----------
 
-Append a member to the end of a queue.
+Append one or multiple members to the end of a queue.
 
 ```
-qpush_back queue member
+qpush_back queue members..
 ```
 
 Return the queue's size after push operation
