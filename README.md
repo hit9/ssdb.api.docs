@@ -954,9 +954,9 @@ For the range and parameters, see [zkeys](#zscan)
 
 ```python
 >>> ssdb.zscan('zset', '', '', '', -1)  # list all key-score pairs
-['keyf', '3', 'key', '6', 'key1', '10', 'key2', '30']
+['keyf', 3, 'key', 6, 'key1', 10, 'key2', 30]
 >>> ssdb.zscan('zset', '', 10, '', -1)  # list all key-score pairs with score not letter than 10
-['key1', '10', 'key2', '30']
+['key1', 10, 'key2', 30]
 ```
 
 zrscan
@@ -967,7 +967,7 @@ Reverse list key-score pairs within some range in a zset, see also
 
 ```python
 >>> ssdb.zrscan('zset', '', '', '', -1)  # reverse list all key-score pairs
-['key2', '30', 'key1', '10', 'key', '6', 'keyf', '3']
+['key2', 30, 'key1', 10, 'key', 6, 'keyf', 3]
 ```
 
 zrank
@@ -1018,7 +1018,7 @@ zrange zset offset limit
 
 ```python
 >>> ssdb.zrange('zset', 0, -1)  # Get all key-score pairs in order, sorted by scores
-['keyf', '3', 'key', '6', 'key1', '10', 'key2', '30']
+['keyf', 3, 'key', 6, 'key1', 10, 'key2', 30]
 ```
 
 
@@ -1034,7 +1034,7 @@ zrrange zset offset limit
 
 ```python
 >>> ssdb.zrrange('zset', 0, -1)  # Get all key-score pairs in order, reverse sorted by scores
-['key2', '30', 'key1', '10', 'key', '6', 'keyf', '3']
+['key2', 30, 'key1', 10, 'key', 6, 'keyf', 3]
 ```
 
 zclear
@@ -1171,7 +1171,7 @@ Return the list of scores.
 
 ```python
 >>> ssdb.multi_zget('zset', 'k1', 'k2')
-['k1', '10', 'k2', '100']
+['k1', 10, 'k2', 100]
 ```
 
 multi_zdel
